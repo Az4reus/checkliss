@@ -45,14 +45,18 @@ r#"
 \usepackage{fontspec}
 \setmainfont{Roboto Slab Regular}
 
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
 \begin{document}
 \Large
-\begin{itemize}
+\begin{todolist}
 "#.to_owned()
 }
 
 fn generate_footer() -> String {
 r#"
-\end{itemize}
+\end{todolist}
 \end{document}"#.to_owned()
 }

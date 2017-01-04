@@ -43,7 +43,7 @@ mod test {
     }
 
     #[test]
-    fn test_playground() {
+    fn test_integration() {
         // if it doesn't die somewhere, we're good.
 
         use std::fs::remove_file;
