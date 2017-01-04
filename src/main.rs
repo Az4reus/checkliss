@@ -2,14 +2,15 @@ use std::process::Command;
 
 mod repl;
 mod tex;
-
+mod io;
+mod item;
 
 fn main() {
     match has_xetex() {
         false => println!("Please install XeTeX to use this tool."),
         true => {
-            let items = repl::launch_repl();
-            let tex = tex::compose_tex(items.unwrap()).unwrap();
+            let item = repl::launch_repl().expect("wtf?");
+            let tex = tex::compose_tex(item).unwrap();
             match tex::compile_tex(tex) {
                 Ok(_) => println!("All went well, your file is somewhere in $PWD here."),
                 Err(e) => println!("Shit crashed and burned, here's why: {}", e),
@@ -38,6 +39,15 @@ mod test {
 
     #[test]
     fn test_xetex_check() {
+        // Yes, this is a test dependent on circumstances uncontrollable by the program itself. Sue me.
         assert!(has_xetex())
+    }
+
+    #[test]
+    fn test_playground() {
+        use std::env::current_dir;
+
+        let pwd = current_dir().unwrap();
+        println!("{}", pwd.to_str().unwrap());
     }
 }
