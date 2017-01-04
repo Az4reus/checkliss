@@ -9,25 +9,26 @@ pub struct Item {
 impl Item {
     pub fn to_tex(&self) -> String {
         match self.children.is_empty() {
-            true => format!("\\item{{ {} }} \n", self.title),
+            true => format!("\\item{{{}}} \n", self.title),
             false => {
-                let mut res = format!("{{\\texbf \\item{{ {} }} }} \n", self.title);
-                let children_tex = self.children.clone().into_iter()
-                    .map(|a| a.to_tex())
-                    .fold(res.clone(), |mut acc, item| {
-                        acc.push_str(&item);
-                        acc
-                    });
+                let mut res = format!("\\item{{\\textbf{{{}}}}}\n", self.title);
+                res.push_str("\\begin{itemize} %parent \n");
 
-                res.push_str(&children_tex);
+                for child in self.children.clone() {
+                    let tex = child.to_tex();
+                    res.push_str(&tex);
+                    res.push_str("\n");
+                }
+
+                res.push_str("\\end{itemize} %parent\n");
                 res
             }
         }
     }
 
-    pub fn new() -> Item {
+    pub fn new(name: String) -> Item {
         Item{
-            title: String::new(),
+            title: name,
             children: Vec::new(),
             indent_level: 0
         }
@@ -59,10 +60,10 @@ mod test {
 
     #[test]
     fn test_builders() {
-        let testchild1 = Item::new();
-        let testchild2 = Item::new();
+        let testchild1 = Item::new("testhcild1".to_owned());
+        let testchild2 = Item::new("testchild2".to_owned());
 
-        let test = Item::new().add_child(testchild1).add_child(testchild2);
+        let test = Item::new("testParent".to_owned()).add_child(testchild1).add_child(testchild2);
         assert!(test.children.len() == 2);
     }
 }

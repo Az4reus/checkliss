@@ -47,11 +47,7 @@ mod test {
         use item::Item;
         use tex::compile_tex;
 
-        let test_node = Item {
-            title: "Test!".to_owned(),
-            children: Vec::new(),
-            indent_level: 0,
-        };
+        let test_node = Item::new("test parent".to_owned()).add_child(Item::new("test child".to_owned()));
 
         compile_tex(test_node);
     }
