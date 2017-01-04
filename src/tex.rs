@@ -47,10 +47,12 @@ r#"
 
 \begin{document}
 \large
+\begin{itemize}
 "#.to_owned()
 }
 
 fn generate_footer() -> String {
 r#"
+\end{itemize}
 \end{document}"#.to_owned()
 }

@@ -49,7 +49,7 @@ mod test {
 
         let test_node = Item {
             title: "Test!".to_owned(),
-            children: None,
+            children: Vec::new(),
             indent_level: 0,
         };
 
