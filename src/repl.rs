@@ -1,10 +1,6 @@
 use std::io::Error;
+use item::Item;
 
-pub struct Item {
-    pub title: String,
-    pub children: Option<Vec<Item>>,
-}
-
-pub fn launch_repl() -> Result<Vec<Item>, Error> {
+pub fn launch_repl() -> Result<Item, Error> {
     unimplemented!();
 }
