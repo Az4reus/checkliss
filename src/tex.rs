@@ -46,6 +46,7 @@ r#"
 \setmainfont{Roboto Slab Regular}
 
 \begin{document}
+\large
 "#.to_owned()
 }
 
