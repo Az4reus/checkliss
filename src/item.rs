@@ -7,6 +7,6 @@ pub struct Item {
 
 impl Item {
     pub fn to_tex(&self) -> String {
-        unimplemented!();
+       self.title.clone()
     }
 }

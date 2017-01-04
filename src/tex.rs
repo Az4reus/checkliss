@@ -1,9 +1,10 @@
 use std::io::Error;
-use std::env;
+use std::process::Command;
 
 use item::Item;
+use io::save_string_locally;
 
-pub fn compose_tex(root: Item) -> Result<String, Error> {
+fn compose_tex(root: Item) -> Result<String, Error> {
     let mut content = String::new();
     content.push_str(&generate_header());
 
@@ -14,24 +15,36 @@ pub fn compose_tex(root: Item) -> Result<String, Error> {
     Ok(content)
 }
 
-pub fn compile_tex(tex: String) -> Result<(), Error> {
-    unimplemented!();
+pub fn compile_tex(root: Item) -> Result<(), Error> {
 
-    let pwd = env::current_dir();
+    let tex = compose_tex(root).expect("bad input");
+
+    match save_string_locally(tex, "temp.tex") {
+        Ok(()) => {
+            let output = Command::new("xelatex")
+                .arg("./temp.tex")
+                .output()
+                .unwrap();
+
+            match output.status.success() {
+                true => Ok(()),
+                false => panic!("compilation failed")
+            }
+        },
+        Err(e) => Err(e)
+    }
 }
 
 fn generate_header() -> String {
-r#"\documentclass[a4paper]{article}
+r#"
+%!TEX TS-program = xetex
+%!TEX encoding = UTF-8 Unicode
 
-\usepackage[sfdefault]{roboto}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+\documentclass[a4paper]{article}
 
-\geometry{
-    body={6.5in, 8.5in},
-    left=1.0in,
-    top=1.25in
-}
+\usepackage{fontspec}
+\setmainfont{Roboto Slab Regular}
+
 \begin{document}
 "#.to_owned()
 }

@@ -10,8 +10,7 @@ fn main() {
         false => println!("Please install XeTeX to use this tool."),
         true => {
             let item = repl::launch_repl().expect("wtf?");
-            let tex = tex::compose_tex(item).unwrap();
-            match tex::compile_tex(tex) {
+            match tex::compile_tex(item) {
                 Ok(_) => println!("All went well, your file is somewhere in $PWD here."),
                 Err(e) => println!("Shit crashed and burned, here's why: {}", e),
             }
@@ -45,9 +44,15 @@ mod test {
 
     #[test]
     fn test_playground() {
-        use std::env::current_dir;
+        use item::Item;
+        use tex::compile_tex;
 
-        let pwd = current_dir().unwrap();
-        println!("{}", pwd.to_str().unwrap());
+        let test_node = Item {
+            title: "Test!".to_owned(),
+            children: None,
+            indent_level: 0,
+        };
+
+        compile_tex(test_node);
     }
 }
