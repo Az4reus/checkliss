@@ -4,6 +4,7 @@ mod repl;
 mod tex;
 mod io;
 mod item;
+mod parser;
 
 fn main() {
     match has_xetex() {
@@ -66,9 +67,9 @@ mod test {
         pdf.push("temp.pdf");
         tex.push("temp.tex");
 
-        remove_file(aux);
-        remove_file(log);
-        remove_file(pdf);
-        remove_file(tex);
+        remove_file(aux).unwrap();
+        remove_file(log).unwrap();
+        remove_file(pdf).unwrap();
+        remove_file(tex).unwrap();
     }
 }
