@@ -3,7 +3,6 @@
 pub struct Item {
     pub title: String,
     pub children: Vec<Item>,
-    pub indent_level: i32,
 }
 
 impl Item {
@@ -30,7 +29,6 @@ impl Item {
         Item{
             title: name,
             children: Vec::new(),
-            indent_level: 0
         }
     }
 
@@ -41,7 +39,6 @@ impl Item {
         Item {
             title: self.title,
             children: tmp,
-            indent_level: self.indent_level,
         }
     }
 
@@ -49,7 +46,6 @@ impl Item {
         Item {
             title: new_title,
             children: self.children.clone(),
-            indent_level: self.indent_level,
         }
     }
 }
