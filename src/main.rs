@@ -1,22 +1,23 @@
 use std::process::Command;
+use std::process;
 
-mod repl;
+extern crate clap;
+
 mod tex;
 mod io;
 mod item;
 mod parser;
+mod opts;
 
 fn main() {
-    match has_xetex() {
-        false => println!("Please install XeTeX to use this tool."),
-        true => {
-            let item = repl::launch_repl().expect("wtf?");
-            match tex::compile_tex(item) {
-                Ok(_) => println!("All went well, your file is somewhere in $PWD here."),
-                Err(e) => println!("Shit crashed and burned, here's why: {}", e),
-            }
-        }
+    if !has_xetex() {
+        println!("Please install XeTeX to use this tool.");
+        process::exit(1)
     }
+
+    let config: opts::Config = opts::parse();
+
+    let root_node = parser::parse(&config);
 }
 
 pub fn has_xetex() -> bool {
