@@ -8,6 +8,7 @@ mod io;
 mod item;
 mod parser;
 mod opts;
+mod list;
 
 fn main() {
     if !has_xetex() {
