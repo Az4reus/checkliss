@@ -11,7 +11,7 @@ impl Item {
             true => format!("\\item{{{}}} \n", self.title),
             false => {
                 let mut res = format!("\\item{{\\textbf{{{}}}}}\n", self.title);
-                res.push_str("\\begin{todolist} %parent \n");
+                res.push_str("\\begin{todolist}\n");
 
                 for child in self.children.clone() {
                     let tex = child.to_tex();
