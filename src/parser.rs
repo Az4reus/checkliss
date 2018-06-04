@@ -1,49 +1,65 @@
 use std::io::Error;
-use std::io::Read;
 use std::fs::OpenOptions;
+use std::fs::File;
+use std::io::Read;
+use std::path::PathBuf;
 
 use item::Item;
+use opts::Config;
 
-pub fn parse(file_name: String) -> Result<Item, Error> {
-    let lines = get_lines(&file_name);
-    let root = Item::new(file_name);
-
-    Ok(root)
+pub fn parse(config: &Config) -> Result<Item, Error> {
+    parse_file(&config.source_file)
 }
 
-pub fn get_lines(file_name: &str) -> Result<Vec<String>, Error> {
-    let mut file = OpenOptions::new().read(true).open(file_name);
+fn parse_file(file: &PathBuf) -> Result<Item, Error> {
+    let mut source_file_handle: File = OpenOptions::new()
+        .read(true)
+        .open(file)
+        .expect("Opening source file failed.");
 
-    match file {
-        Ok(mut file) => {
-            let mut content = String::new();
-            file.read_to_string(&mut content);
-            let t = content.split("\n").map(|t| t.to_owned()).collect::<Vec<String>>();
-            Ok(t)
-        },
+    let mut source_file_contents = String::new();
+    source_file_handle.read_to_string(&mut source_file_contents)?;
 
-        Err(e) => panic!("File not readable: {}", e),
-    }
+    parse_text(source_file_contents)
 }
 
-pub fn indent_levels(input_lines: Vec<String>) -> Vec<(usize, String)> {
-    input_lines.into_iter().map(|line| {
-        let iterator = line.chars();
-        let whitespace: Vec<char> = iterator.take_while(|c| *c == ' ' || *c == '\t').collect();
-        (whitespace.len(), line.trim().to_owned())
-    }).collect::<Vec<(usize, String)>>()
+fn parse_text(text: String) -> Result<Item, Error> {
+    let line_items = text.split("\n")
+        .filter(|x| x != &"")
+        .map(|x| Item::new(x.to_owned()))
+        .collect::<Vec<Item>>();
+    Ok(Item {
+        title: String::new(),
+        children: line_items,
+    })
 }
 
+#[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
-    fn test_whitespace_counting() {
-        let input = vec!("    4test".to_owned(), "\t\t2tabtest".to_owned(), "  2stest".to_owned());
-        let expected_output: Vec<(usize, String)> = vec!((4, "4test".to_owned()), (2, "2tabtest".to_owned()), (2, "2stest".to_owned()));
+    fn test_parsing() {
+        let test = r#"
+- Test 1
+- Test 2
+Test 3
+- Test 4
+    - Test 5"#.to_owned();
 
-        let actual_output = indent_levels(input);
+        let expected_items = vec![
+            Item::new("- Test 1".to_owned()),
+            Item::new("- Test 2".to_owned()),
+            Item::new("Test 3".to_owned()),
+            Item::new("- Test 4".to_owned()),
+            Item::new("    - Test 5".to_owned()),
+        ];
 
-        assert_eq!(actual_output, expected_output);
+        let expected_list = Item {
+            title: String::new(),
+            children: expected_items,
+        };
+
+        assert_eq!(parse_text(test).unwrap(), expected_list)
     }
 }

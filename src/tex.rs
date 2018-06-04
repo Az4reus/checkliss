@@ -17,27 +17,26 @@ fn compose_tex(root: Item) -> Result<String, Error> {
 }
 
 pub fn compile_tex(root: Item, config: &Config) -> Result<(), Error> {
-
     let tex = compose_tex(root).expect("bad input");
 
     match save_string_locally(tex, "temp.tex") {
         Ok(()) => {
-            let output = Command::new("xelatex")
-                .arg("./temp.tex")
-                .output()
-                .unwrap();
+            let output = Command::new("xelatex").arg("./temp.tex").output().unwrap();
 
             match output.status.success() {
-                true => Ok(()),
-                false => panic!("compilation failed")
+                true => {
+                    if config.keep_tex == false {}
+                    Ok(())
+                }
+                false => panic!("compilation failed"),
             }
-        },
-        Err(e) => Err(e)
+        }
+        Err(e) => Err(e),
     }
 }
 
 fn generate_header() -> String {
-r#"
+    r#"
 %!TEX TS-program = xetex
 %!TEX encoding = UTF-8 Unicode
 
@@ -57,7 +56,7 @@ r#"
 }
 
 fn generate_footer() -> String {
-r#"
+    r#"
 \end{todolist}
 \end{document}"#.to_owned()
 }
