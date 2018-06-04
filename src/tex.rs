@@ -3,6 +3,7 @@ use std::process::Command;
 
 use item::Item;
 use io::save_string_locally;
+use opts::Config;
 
 fn compose_tex(root: Item) -> Result<String, Error> {
     let mut content = String::new();
@@ -15,7 +16,7 @@ fn compose_tex(root: Item) -> Result<String, Error> {
     Ok(content)
 }
 
-pub fn compile_tex(root: Item) -> Result<(), Error> {
+pub fn compile_tex(root: Item, config: &Config) -> Result<(), Error> {
 
     let tex = compose_tex(root).expect("bad input");
 
