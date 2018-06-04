@@ -1,4 +1,3 @@
-
 #[derive(Clone, Debug, PartialEq)]
 pub struct Item {
     pub title: String,
@@ -10,7 +9,7 @@ impl Item {
         match self.children.is_empty() {
             true => format!("\\item{{{}}} \n", self.title),
             false => {
-                let mut res = format!("\\item{{\\textbf{{{}}}}}\n", self.title);
+                let mut res = format!("\\item{{\\textbf{{ {} }} }}\n", self.title);
                 res.push_str("\\begin{todolist}\n");
 
                 for child in self.children.clone() {
@@ -26,7 +25,7 @@ impl Item {
     }
 
     pub fn new(name: String) -> Item {
-        Item{
+        Item {
             title: name,
             children: Vec::new(),
         }
@@ -59,7 +58,9 @@ mod test {
         let testchild1 = Item::new("testhcild1".to_owned());
         let testchild2 = Item::new("testchild2".to_owned());
 
-        let test = Item::new("testParent".to_owned()).add_child(testchild1).add_child(testchild2);
+        let test = Item::new("testParent".to_owned())
+            .add_child(testchild1)
+            .add_child(testchild2);
         assert!(test.children.len() == 2);
     }
 }

@@ -21,12 +21,10 @@ fn main() {
 }
 
 pub fn has_xetex() -> bool {
-    match Command::new("xetex")
-        .arg("-v")
-        .output() {
-            Ok(output) => output.status.success(),
-            Err(_) => false
-        }
+    match Command::new("xetex").arg("-v").output() {
+        Ok(output) => output.status.success(),
+        Err(_) => false,
+    }
 }
 
 #[cfg(test)]

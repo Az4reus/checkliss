@@ -4,8 +4,7 @@ use std::io::Write;
 use std::env::current_dir;
 
 pub fn save_string_locally(content: String, filename: &str) -> Result<(), io::Error> {
-    let mut local_filename = current_dir()
-        .expect("Stop launching this without a PWD");
+    let mut local_filename = current_dir().expect("Stop launching this without a PWD");
 
     local_filename.push(filename);
 
@@ -15,18 +14,16 @@ pub fn save_string_locally(content: String, filename: &str) -> Result<(), io::Er
         .open(local_filename);
 
     match file {
-        Ok(mut file) => {
-            match file.write(content.as_bytes()) {
-                Ok(_) => Ok(()),
-                Err(e) => Err(e)
-            }
+        Ok(mut file) => match file.write(content.as_bytes()) {
+            Ok(_) => Ok(()),
+            Err(e) => Err(e),
         },
-        Err(e) => Err(e)
+        Err(e) => Err(e),
     }
 }
 
 #[cfg(test)]
-mod test{
+mod test {
     use super::*;
 
     #[test]
