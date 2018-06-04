@@ -1,5 +1,5 @@
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Item {
     pub title: String,
     pub children: Vec<Item>,
