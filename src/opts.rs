@@ -2,6 +2,7 @@ use clap::App;
 use clap::Arg;
 use clap::ArgMatches;
 use std::path::PathBuf;
+use std::fmt::Display;
 
 pub fn parse() -> Config {
     let matches = App::new("checklist")
@@ -61,12 +62,14 @@ fn to_config(matches: ArgMatches) -> Config {
     }
 }
 
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Config {
     pub verbose: bool,
     pub keep_tex: bool,
     pub target_file: PathBuf,
     pub source_file: PathBuf,
 }
+
 
 #[cfg(test)]
 mod test {

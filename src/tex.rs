@@ -1,5 +1,6 @@
 use std::io::Error;
 use std::process::Command;
+use std::process::Output;
 
 use item::Item;
 use io::save_string_locally;
@@ -9,7 +10,7 @@ fn compose_tex(root: Item) -> Result<String, Error> {
     let mut content = String::new();
     content.push_str(&generate_header());
 
-    let tex = root.to_tex();
+    let tex = root.children_tex();
     content.push_str(&tex);
 
     content.push_str(&generate_footer());
@@ -21,14 +22,19 @@ pub fn compile_tex(root: Item, config: &Config) -> Result<(), Error> {
 
     match save_string_locally(tex, "temp.tex") {
         Ok(()) => {
-            let output = Command::new("xelatex").arg("./temp.tex").output().unwrap();
+            let output: Output = Command::new("xelatex").arg("./temp.tex").output().unwrap();
 
             match output.status.success() {
                 true => {
-                    if config.keep_tex == false {}
+                    if config.keep_tex == false {
+                        Command::new("rm").arg("./temp.tex").output().expect("Couldn't delete temp file.");
+                    }
                     Ok(())
                 }
-                false => panic!("compilation failed"),
+                false => {
+                    println!("{:?}", output);
+                    panic!("compilation failed")
+                }
             }
         }
         Err(e) => Err(e),

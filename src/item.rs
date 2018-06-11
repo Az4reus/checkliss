@@ -9,7 +9,7 @@ impl Item {
         match self.children.is_empty() {
             true => format!("\\item{{{}}} \n", self.title),
             false => {
-                let mut res = format!("\\item{{\\textbf{{ {} }} }}\n", self.title);
+                let mut res = format!("\\item{{\\textbf{{{}}}}}\n", self.title);
                 res.push_str("\\begin{todolist}\n");
 
                 for child in self.children.clone() {
@@ -18,10 +18,23 @@ impl Item {
                     res.push_str("\n");
                 }
 
-                res.push_str("\\end{todolist} %parent\n");
+                res.push_str("\\end{todolist}\n");
                 res
             }
         }
+    }
+
+    /// This function is used for not generating an empty top-level list when one item is used as
+    /// root of the tree. 
+    pub fn children_tex(&self) -> String {
+        let mut buffer = String::new();
+        for child in self.children.clone() {
+            let tex = child.to_tex();
+            buffer.push_str(&tex);
+            buffer.push_str("\n")
+        }
+
+        buffer
     }
 
     pub fn new(name: String) -> Item {

@@ -55,7 +55,7 @@ Test 3
             Item::new("    - Test 5".to_owned()),
         ];
 
-        let expected_list = Item {
+        let expected_root = Item {
             title: String::new(),
             children: expected_items,
         };

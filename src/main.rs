@@ -16,8 +16,12 @@ fn main() {
     }
 
     let config: opts::Config = opts::parse();
-
     let root_node = parser::parse(&config);
+
+    match tex::compile_tex(root_node.unwrap(), &config) {
+        Ok(()) => println!("Success! File generated."),
+        Err(e) => println!("Compilation failed, error: {:?}", e)
+    }
 }
 
 pub fn has_xetex() -> bool {
