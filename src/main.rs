@@ -20,7 +20,7 @@ fn main() {
 
     match tex::compile_tex(root_node.unwrap(), &config) {
         Ok(()) => println!("Success! File generated."),
-        Err(e) => println!("Compilation failed, error: {:?}", e)
+        Err(e) => println!("Compilation failed, error: {:?}", e),
     }
 }
 

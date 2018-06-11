@@ -27,7 +27,10 @@ pub fn compile_tex(root: Item, config: &Config) -> Result<(), Error> {
             match output.status.success() {
                 true => {
                     if config.keep_tex == false {
-                        Command::new("rm").arg("./temp.tex").output().expect("Couldn't delete temp file.");
+                        Command::new("rm")
+                            .arg("./temp.tex")
+                            .output()
+                            .expect("Couldn't delete temp file.");
                     }
                     Ok(())
                 }

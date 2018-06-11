@@ -25,7 +25,7 @@ impl Item {
     }
 
     /// This function is used for not generating an empty top-level list when one item is used as
-    /// root of the tree. 
+    /// root of the tree.
     pub fn children_tex(&self) -> String {
         let mut buffer = String::new();
         for child in self.children.clone() {
@@ -46,7 +46,7 @@ impl Item {
 
     pub fn set_children(self, children: Vec<Item>) -> Item {
         Item {
-            title: self.title, 
+            title: self.title,
             children: children,
         }
     }

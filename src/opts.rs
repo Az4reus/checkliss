@@ -6,7 +6,7 @@ use std::path::PathBuf;
 pub fn parse() -> Config {
     let matches = App::new("checklist")
         .about("Turns plaintext lists into printable checklist pdfs.")
-        .author("M. Malignatus <mordecai@malignat.us>")
+        .author("Mordecai Malignatus <mordecai@malignat.us>")
         .version("0.1")
         .arg(
             Arg::with_name("source_file")
@@ -39,9 +39,7 @@ pub fn parse() -> Config {
 fn to_config(matches: ArgMatches) -> Config {
     let v = matches.is_present("v");
     let keep = matches.is_present("keep_tex");
-    let source_file_string = matches
-        .value_of("source_file")
-        .expect("I need a source file to work with.");
+    let source_file_string = matches.value_of("source_file").unwrap();
     let source_file = PathBuf::from(source_file_string.to_owned());
     let target_file = match matches.is_present("target_file") {
         true => {

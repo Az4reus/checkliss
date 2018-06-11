@@ -48,17 +48,17 @@ mod test {
         "#.to_owned();
 
         let expected_sublist = vec![
-            Item::new("- SubItem 1".to_owned()), 
+            Item::new("- SubItem 1".to_owned()),
             Item::new("- SubItem 2".to_owned()),
         ];
 
         let expected_children = vec![
-            Item::new("- Item 1".to_owned()), 
+            Item::new("- Item 1".to_owned()),
             Item::new("- Item 2".to_owned()).set_children(expected_sublist),
         ];
 
         let expected_root = Item {
-            title: String::new(), 
+            title: String::new(),
             children: expected_children,
         };
 
