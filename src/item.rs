@@ -60,13 +60,6 @@ impl Item {
             children: tmp,
         }
     }
-
-    pub fn set_title(&mut self, new_title: String) -> Item {
-        Item {
-            title: new_title,
-            children: self.children.clone(),
-        }
-    }
 }
 
 #[cfg(test)]

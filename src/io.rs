@@ -38,6 +38,9 @@ mod test {
         local_path.push("temp");
 
         assert!(metadata(&local_path).unwrap().is_file());
-        remove_file(local_path);
+        match remove_file(local_path) {
+            Ok(_) => {}, 
+            Err(e) => println!("Removing {} failed. Please do it by hand.", e)
+        }
     }
 }

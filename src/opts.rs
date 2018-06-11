@@ -2,7 +2,6 @@ use clap::App;
 use clap::Arg;
 use clap::ArgMatches;
 use std::path::PathBuf;
-use std::fmt::Display;
 
 pub fn parse() -> Config {
     let matches = App::new("checklist")
@@ -68,13 +67,4 @@ pub struct Config {
     pub keep_tex: bool,
     pub target_file: PathBuf,
     pub source_file: PathBuf,
-}
-
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_parse() {}
 }

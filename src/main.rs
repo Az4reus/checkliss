@@ -33,16 +33,8 @@ pub fn has_xetex() -> bool {
 
 #[cfg(test)]
 mod test {
-    use super::*;
-
     #[test]
     fn test_sanity() {
         assert!(1 + 1 == 2);
-    }
-
-    #[test]
-    fn test_xetex_check() {
-        // Yes, this is a test dependent on circumstances uncontrollable by the program itself. Sue me.
-        assert!(has_xetex())
     }
 }
