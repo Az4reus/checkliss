@@ -39,8 +39,15 @@ impl Item {
 
     pub fn new(name: String) -> Item {
         Item {
-            title: name,
+            title: name.trim().to_owned(),
             children: Vec::new(),
+        }
+    }
+
+    pub fn set_children(self, children: Vec<Item>) -> Item {
+        Item {
+            title: self.title, 
+            children: children,
         }
     }
 

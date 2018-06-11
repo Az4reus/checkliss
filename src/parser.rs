@@ -39,7 +39,34 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_parsing() {
+    fn test_sublist_parsing() {
+        let text = r#"
+        - Item 1
+        - Item 2
+            - SubItem 1
+            - SubItem 2
+        "#.to_owned();
+
+        let expected_sublist = vec![
+            Item::new("- SubItem 1".to_owned()), 
+            Item::new("- SubItem 2".to_owned()),
+        ];
+
+        let expected_children = vec![
+            Item::new("- Item 1".to_owned()), 
+            Item::new("- Item 2".to_owned()).set_children(expected_sublist),
+        ];
+
+        let expected_root = Item {
+            title: String::new(), 
+            children: expected_children,
+        };
+
+        assert_eq!(parse_text(text).unwrap(), expected_root)
+    }
+
+    #[test]
+    fn test_very_basic_parsing() {
         let test = r#"
 - Test 1
 - Test 2
@@ -52,7 +79,7 @@ Test 3
             Item::new("- Test 2".to_owned()),
             Item::new("Test 3".to_owned()),
             Item::new("- Test 4".to_owned()),
-            Item::new("    - Test 5".to_owned()),
+            Item::new("- Test 5".to_owned()),
         ];
 
         let expected_root = Item {
@@ -60,6 +87,6 @@ Test 3
             children: expected_items,
         };
 
-        assert_eq!(parse_text(test).unwrap(), expected_list)
+        assert_eq!(parse_text(test).unwrap(), expected_root)
     }
 }
