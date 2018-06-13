@@ -9,6 +9,13 @@
 - Change parsing to be not about lines, but about a stream of tokens (text,
   linebreak, etc, actually make it a parser) 
 
+## Feature: Enumerating of List items. 
+
+- I want it so every top level carries a number, with sublists carrying a
+  smaller version of that number. 
+- This progression goes `1, 1.1, 1.1.1`, etc. 
+- This number is kept track of while rendering, not in the item itself. 
+
 ## Feature: Dating of lists, with file name, in a tiny footer
 
 - Function that formats current date appropriately
